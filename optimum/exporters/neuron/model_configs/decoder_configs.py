@@ -14,15 +14,20 @@
 # limitations under the License.
 """Neuron export configurations for models using transformers_neuronx."""
 
+import importlib
+
+from transformers_neuronx import ContinuousBatchingConfig
+from transformers_neuronx import NeuronConfig as TnxNeuronConfig
+
 from optimum.exporters.tasks import TasksManager
 
 from ....neuron.backends.hlo.config import NeuronConfig
 from ....neuron.backends.hlo.decoder import NeuronHloDecoderModel
 from ....neuron.models.granite.model import GraniteForSampling
 from ....neuron.models.llama.model import LlamaHloModel
-from ....neuron.models.qwen2.model import Qwen2ForSampling
 from ....neuron.models.phi4.model import Phi4ForSampling
-from ..config import TextNeuronDecoderConfig
+from ....neuron.models.qwen2.model import Qwen2ForSampling
+from ..base import NeuronExportConfig
 
 
 register_in_tasks_manager = TasksManager.create_register("neuron")
@@ -165,6 +170,6 @@ class GraniteNeuronConfig(NeuronDecoderExportConfig):
 
 
 @register_in_tasks_manager("phi4", "text-generation")
-class Phi4NeuronConfig(TextNeuronDecoderConfig):
+class Phi4NeuronConfig(NeuronDecoderExportConfig):
     NEURONX_CLASS = Phi4ForSampling
     CONTINUOUS_BATCHING = True
